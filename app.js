@@ -1,24 +1,19 @@
 const express = require("express");
+const myRoutes = require("./routes/myRoutes");
+const path = require("path");
+const rootDir = require("./util/path");
+const bodyParser = require("body-parser");
 
 const app = express();
 
-// app.use((req, res, next) => {
-//    console.log("First middleware");
-//    next();
-// });
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(path.join(rootDir, "public")));
 
-// app.use((req, res, next) => {
-//    console.log("Second middleware");
-//    res.send("<h1>Express works!</h1>")
-// });
+app.use(myRoutes);
 
-app.use("/users", (req, res, next) => {
-   res.send("<h1>Users</h1><ul><li>Guna</li><li>Sekar</li></ul>")
+// not-found
+app.get((req, res) => {
+   res.sendFile(path.join(rootDir, "views", "404.html"));
 });
-
-app.use("/", (req, res, next) => {
-   res.send("/ Nothing page!>")
-});
-
 
 app.listen(3001);
